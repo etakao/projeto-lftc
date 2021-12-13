@@ -1,0 +1,38 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --text: #CECECE;
+  --background: #1E2122;
+  --light-background: #282B2C;
+  --lighter-background: #3B4244;
+  --blue: #345C98;
+  --green: #188744;
+  --red: #8A1427;
+}
+
+body {
+  background: var(--background);
+  color: var(--text);
+  accent-color: var(--blue);
+}
+
+body,
+input,
+textarea {
+  font: 400 14px "Inter", sans-serif;
+}
+
+button {
+  cursor: pointer;
+  font: 500 16px "Inter", sans-serif;
+}
+
+h1,
+h2,
+h3 {
+  font: 700 18px "Inter", sans-serif;
+}
