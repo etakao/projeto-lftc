@@ -16,14 +16,15 @@
 
 body {
   background: var(--background);
+  font: 400 14px "Inter", sans-serif;
   color: var(--text);
   accent-color: var(--blue);
 }
 
-body,
 input,
 textarea {
-  font: 400 14px "Inter", sans-serif;
+  font: 400 16px "Inter", sans-serif;
+  color: var(--text);
 }
 
 button {
@@ -35,4 +36,12 @@ h1,
 h2,
 h3 {
   font: 700 18px "Inter", sans-serif;
+}
+
+.page-container {
+  width: 100%;
+  padding: 20px 80px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }

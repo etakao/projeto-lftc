@@ -1,0 +1,26 @@
+.navbar-container {
+  width: 100vw;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  padding: 20px 0;
+  background: var(--light-background);
+
+  .active-link {
+    text-decoration: underline;
+  }
+
+  a {
+    text-align: center;
+    text-decoration: none;
+    color: var(--text);
+    font-size: 18px;
+    font-weight: 700;
+
+    transition: filter 0.2s;
+
+    &:hover:not(:active) {
+      filter: brightness(0.8);
+      text-decoration: underline;
+    }
+  }
+}
