@@ -1,0 +1,41 @@
+.er-container {
+  width: 100%;
+  max-width: 480px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.input-box {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+
+  label {
+    margin-bottom: 10px;
+    font-weight: 500;
+  }
+
+  .valid-input {
+    background: var(--green);
+  }
+  
+  .invalid-input {
+    background: var(--red);
+  }
+  
+  input {
+    padding: 6px;
+    border: none;
+    border-radius: 4px;
+    margin-bottom: 20px;
+    background: var(--lighter-background);
+
+    transition: filter 0.2s;
+
+    &:hover:not(:focus) {
+      filter: brightness(0.8);
+    }
+  }
+}
