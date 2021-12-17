@@ -12,9 +12,11 @@ export default function GR() {
     let auxArray = new Map();
     grammar.map((item, value) => {
       if (auxArray.get(item[0]) !== undefined)
+      //
         auxArray.set(item[0], `${auxArray.get(item[0])}${item[1]}|`);
       else
         auxArray.set(item[0], `${item[1]}|`);
+
     })
     auxArray.forEach((value, key, map) => {
       auxArray.set(key, value.substr(0, value.length - 1));
