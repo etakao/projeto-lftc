@@ -12,6 +12,8 @@ export default function GR() {
       rule: ''
     }
   ]);
+  const [expression, setExpression] = useState('');
+  const [isValid, setIsValid] = useState('');
 
   function updateRule(index, value) {
     const updtGrammar = [...grammar];
@@ -41,65 +43,65 @@ export default function GR() {
     setIteration(0);
   }
 
-  // function validateGrammar(grammar, input) {
-  //   let auxArray = new Map();
-  //   grammar.map((item, value) => {
-  //     if (auxArray.get(item[0]) !== undefined)
-  //       auxArray.set(item[0], `${auxArray.get(item[0])}${item[1]}|`);
-  //     else
-  //       auxArray.set(item[0], `${item[1]}|`);
-  //   })
-  //   auxArray.forEach((value, key, map) => {
-  //     auxArray.set(key, value.substr(0, value.length - 1));
-  //   })
+  // validar a gramatica com base no input
+  function validateGrammar(auxGrammar, input) {
+    console.log('validateGrammar');
+    let auxArray = new Map();
+    auxGrammar.forEach(item => {
+      // item[0] => S ou A ou B...
+      // item[1] => regra
+      auxArray.set(item[0], `${item[1]}`);
+    });
 
-  //   let ER = findReplace(auxArray.get('S'), auxArray);
-  //   while (ER != findReplace(ER, auxArray)) {
-  //     ER = findReplace(ER, auxArray);
-  //   }
+    //ER = todas as regras da gramatica
+    let ER = findReplace(auxArray.get('S'), auxArray);
+    while (ER !== findReplace(ER, auxArray)) {
+      ER = findReplace(ER, auxArray);
+    }
 
-  //   ER = ER.replace("ε", "\\b");
-  //   ER = ER.replace("λ", "\\b");
+    ER = ER.replace("ε", "\\b");
+    ER = ER.replace("λ", "\\b");
 
-  //   var regexp = new RegExp(ER)
+    // talvez precise adicionar o chapeu e o cifrao na ER: ^ER$
 
-  //   return regexp.test(input);
-  // }
+    var regexp = new RegExp(ER);
 
-  // function findReplace(input, grammar) {
-  //   let i = 0;
-  //   let newString = input;
-  //   while (i < input.length) {
-  //     if (grammar.has(input[i])) {
-  //       newString = newString.replace(input[i], `(${grammar.get(input[i])})`);
-  //     }
-  //     i++;
-  //   }
+    return regexp.test(input);
+  }
 
-  //   return newString;
-  // }
+  // input: [a, A]
+  // grammar: S, A. B...
+  //OK
+  function findReplace(input, auxGrammar) {
+    console.log('findReplace');
+    let newString = input;
+    for (let i = 0; i < input.length; i++) {
+      if (auxGrammar.has(input[i])) {
+        newString = newString.replace(input[i], `(${auxGrammar.get(input[i])})`);
+      }
+      // newString: a, b, c, ε; somente as regras
+      return newString;
+    }
+  }
 
-  // function validarEntradas() {
-  //   let initValue = $('#start-grammar').val();
-  //   let grammar = [['S', initValue]];
+  // OK
+  function validateExpression() {
+    console.log('validateExpression');
+    let initValue = grammar[0].rule;
 
-  //   for (let i = 0; i < entrys; i++) {
-  //     let key = $(`#key-${i}`).val();
-  //     let value = $(`#value-${i}`).val();
+    let auxGrammar = [['S', initValue]];
 
-  //     grammar.push([key, value])
-  //   }
+    for (let i = 1; i < grammar.length; i++) {
+      let key = grammar[i].letter;
+      let value = grammar[i].rule;
 
-  //   for (let i = 0; i < inputs; i++) {
-  //     let inputValue = $(`#input-${i}`).val();
-  //     let result = validateGrammar(grammar, inputValue);
+      auxGrammar.push([key, value])
+    }
 
-  //     if (result)
-  //       $(`#input-${i}`).css("background-color", '#67e480');
-  //     else
-  //       $(`#input-${i}`).css("background-color", '#e96379');
-  //   }
-  // }
+    let isGrammarValid = validateGrammar(auxGrammar, expression);
+
+    setIsValid(isGrammarValid);
+  }
 
   return (
     <div className='gr-container'>
@@ -125,8 +127,19 @@ export default function GR() {
       <div className='gr-expression'>
         <label htmlFor='expression-input'>Expressão:</label>
         <div className='input-expression'>
-          <input id='expression-input' type='text' />
-          <button type='button'>Testar</button>
+          <input
+            id='expression-input'
+            type='text'
+            className={isValid ? 'valid-expression' : 'invalid-expression'}
+            value={expression}
+            onChange={e => setExpression(e.target.value)}
+          />
+          <button
+            type='button'
+            onClick={validateExpression}
+          >
+            Testar
+          </button>
         </div>
       </div>
     </div>

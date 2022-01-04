@@ -90,6 +90,14 @@
   grid-template-columns: 4fr 1fr;
   margin-top: 10px;
 
+  .valid-expression {
+    background: var(--green);
+  }
+
+  .invalid-expression {
+    background: var(--red);
+  }
+
   input {
     padding: 6px;
     border: none;
