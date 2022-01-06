@@ -45,7 +45,6 @@ export default function GR() {
 
   // validar a gramatica com base no input
   function validateGrammar(auxGrammar, input) {
-    console.log('validateGrammar');
     let auxArray = new Map();
     auxGrammar.forEach(item => {
       // item[0] => S ou A ou B...
@@ -57,14 +56,12 @@ export default function GR() {
     let ER = findReplace(auxArray.get('S'), auxArray);
     while (ER !== findReplace(ER, auxArray)) {
       ER = findReplace(ER, auxArray);
+      console.log(ER)
     }
 
-    ER = ER.replace("ε", "\\b");
-    ER = ER.replace("λ", "\\b");
+    ER = ER.replace("ε", "");
 
-    // talvez precise adicionar o chapeu e o cifrao na ER: ^ER$
-
-    var regexp = new RegExp(ER);
+    var regexp = new RegExp(`^(${ER})$`);
 
     return regexp.test(input);
   }
@@ -73,20 +70,18 @@ export default function GR() {
   // grammar: S, A. B...
   //OK
   function findReplace(input, auxGrammar) {
-    console.log('findReplace');
     let newString = input;
     for (let i = 0; i < input.length; i++) {
       if (auxGrammar.has(input[i])) {
         newString = newString.replace(input[i], `(${auxGrammar.get(input[i])})`);
       }
-      // newString: a, b, c, ε; somente as regras
-      return newString;
     }
+    // newString: a, b, c, ε; somente as regras
+    return newString;
   }
 
   // OK
   function validateExpression() {
-    console.log('validateExpression');
     let initValue = grammar[0].rule;
 
     let auxGrammar = [['S', initValue]];
