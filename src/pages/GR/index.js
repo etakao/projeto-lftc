@@ -8,7 +8,7 @@ export default function GR() {
   const [grammar, setGrammar] = useState([
     {
       iteration: 0,
-      letter: alphabet[iteration],
+      symbol: alphabet[iteration],
       rule: ''
     }
   ]);
@@ -27,7 +27,7 @@ export default function GR() {
     const newGrammar = grammar.slice();
     newGrammar.push({
       iteration: iteration + 1,
-      letter: alphabet[iteration + 1],
+      symbol: alphabet[iteration + 1],
       rule: ''
     });
     setGrammar(newGrammar);
@@ -39,7 +39,7 @@ export default function GR() {
     setGrammar([
       {
         iteration: 0,
-        letter: alphabet[0],
+        symbol: alphabet[0],
         rule: ''
       }
     ]);
@@ -57,9 +57,9 @@ export default function GR() {
     });
 
     // ER recebe todas as regras da gramatica
-    let ER = findReplace(auxArray.get('S'), auxArray);
-    while (ER !== findReplace(ER, auxArray)) {
-      ER = findReplace(ER, auxArray);
+    let ER = findSymbolReplace(auxArray.get('S'), auxArray);
+    while (ER !== findSymbolReplace(ER, auxArray)) {
+      ER = findSymbolReplace(ER, auxArray);
       console.log(ER)
     }
 
@@ -70,8 +70,8 @@ export default function GR() {
     return regexp.test(input);
   }
 
-  // substitui 
-  function findReplace(input, auxGrammar) {
+  // substitui o simbolo por sua respectiva regra
+  function findSymbolReplace(input, auxGrammar) {
     let newString = input;
     for (let i = 0; i < input.length; i++) {
       if (auxGrammar.has(input[i])) {
@@ -91,7 +91,7 @@ export default function GR() {
 
     // transforma a gramatica em um array da forma [['S', regra]]
     for (let i = 1; i < grammar.length; i++) {
-      let key = grammar[i].letter;
+      let key = grammar[i].symbol;
       let value = grammar[i].rule;
 
       auxGrammar.push([key, value])
@@ -111,7 +111,7 @@ export default function GR() {
       <div className='gr-rules'>
         {grammar.map((item, index) => (
           <div className='gr-rule' key={index}>
-            <label htmlFor='rule-input'>{item.letter}</label>
+            <label htmlFor='rule-input'>{item.symbol}</label>
             <img src='/images/rightArrow.png' alt='Seta p/ direita' />
             <input
               type='texy'
@@ -141,6 +141,7 @@ export default function GR() {
           </button>
         </div>
       </div>
+      <span>Caractere especial para uso: ε</span>
     </div>
   );
 }
