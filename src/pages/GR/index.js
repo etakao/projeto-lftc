@@ -15,12 +15,14 @@ export default function GR() {
   const [expression, setExpression] = useState('');
   const [isValid, setIsValid] = useState('');
 
+  // atualiza uma regra enquanto eh preenchida
   function updateRule(index, value) {
     const updtGrammar = [...grammar];
     updtGrammar[index].rule = value;
     setGrammar(updtGrammar);
   }
 
+  // adiciona uma nova regra. ex.: A -> (...), B -> (...), e assim por diante
   function addRule() {
     const newGrammar = grammar.slice();
     newGrammar.push({
@@ -32,6 +34,7 @@ export default function GR() {
     setIteration(iteration + 1);
   }
 
+  // limpa todas a gramatica
   function resetGrammar() {
     setGrammar([
       {
@@ -43,16 +46,17 @@ export default function GR() {
     setIteration(0);
   }
 
-  // validar a gramatica com base no input
+  // valida a gramatica com base no input
   function validateGrammar(auxGrammar, input) {
     let auxArray = new Map();
+
+    // item[0] => S, A ou B...
+    // item[1] => regra (a|A)
     auxGrammar.forEach(item => {
-      // item[0] => S ou A ou B...
-      // item[1] => regra
       auxArray.set(item[0], `${item[1]}`);
     });
 
-    //ER = todas as regras da gramatica
+    // ER recebe todas as regras da gramatica
     let ER = findReplace(auxArray.get('S'), auxArray);
     while (ER !== findReplace(ER, auxArray)) {
       ER = findReplace(ER, auxArray);
@@ -66,9 +70,7 @@ export default function GR() {
     return regexp.test(input);
   }
 
-  // input: [a, A]
-  // grammar: S, A. B...
-  //OK
+  // substitui 
   function findReplace(input, auxGrammar) {
     let newString = input;
     for (let i = 0; i < input.length; i++) {
@@ -76,16 +78,18 @@ export default function GR() {
         newString = newString.replace(input[i], `(${auxGrammar.get(input[i])})`);
       }
     }
+
     // newString: a, b, c, ε; somente as regras
     return newString;
   }
 
-  // OK
+  // verifica a validade da expressao dada pelo usuario
   function validateExpression() {
     let initValue = grammar[0].rule;
 
     let auxGrammar = [['S', initValue]];
 
+    // transforma a gramatica em um array da forma [['S', regra]]
     for (let i = 1; i < grammar.length; i++) {
       let key = grammar[i].letter;
       let value = grammar[i].rule;
